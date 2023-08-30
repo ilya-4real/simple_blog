@@ -1,0 +1,13 @@
+{% extends 'blog/base_blog.html' %}
+
+
+{%block title%}
+    All posts!
+{%endblock%}
+
+
+{%block content%}
+    {%for post in posts%}
+            {% include 'blog/includes/post_card.html' %}
+    {%endfor%}
+{%endblock%}

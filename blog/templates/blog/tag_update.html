@@ -1,0 +1,30 @@
+{% extends 'blog/base_blog.html' %}
+
+{% block title %}
+  Edit tag - {{ tag.title }}
+{% endblock %}
+
+{% block content %}
+  <div class="container align-items-center" style="max-width: 450px;">
+    <h1 class="mt-5 mb-5" >Create Your own tag!</h1>
+  </div>
+  <form action="{{ tag.get_update_url }}" method="post" style="max-width: 300px; margin: auto;">
+  {% csrf_token %}
+
+      {%for field in form%}
+        <div class="form-control">
+          {%if field.errors %}
+            <div class="alert alert-danger">
+              {{ field.errors }}
+            </div>
+          {% endif %}
+
+          {{field}}
+        </div>
+
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary">Edit tag</button>
+    </form>
+
+{% endblock %}

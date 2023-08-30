@@ -1,0 +1,19 @@
+{% extends 'blog/base_blog.html' %}
+
+{% block title %}
+    {{post.title}}
+{% endblock %}
+
+{% block content %}
+    <div class="card mt-5" style="width: 18rem; margin: auto;">
+      <div class="card-body">
+        <h5 class="card-title">{{post.title}}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">{{post.pub_date}}</h6>
+        <p class="card-text">{{post.body}}</p>
+          {% for tag in post.tags.all %}
+          <a href="{{tag.get_absolute_url}}" class="card-link">#{{tag.title}}</a>
+          {% endfor %}
+        <a href="#" class="card-link">Author</a>
+      </div>
+    </div>
+{% endblock %}
