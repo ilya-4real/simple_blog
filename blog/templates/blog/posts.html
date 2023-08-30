@@ -7,7 +7,39 @@
 
 
 {%block content%}
-    {%for post in posts%}
+    {%for post in page.object_list %}
             {% include 'blog/includes/post_card.html' %}
     {%endfor%}
 {%endblock%}
+{% block paginator %}
+<nav aria-label="..." style="max-width: 350px; margin: auto">
+  <ul class="pagination">
+
+    {% if page.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a>
+    </li>
+    {% else %}
+      <li class="page-item">
+      <a class="page-link disabled">Previous</a>
+    </li>
+    {% endif %}
+      {%for n in page.paginator.page_range %}
+      {% if page.number == n %}
+        <li class="page-item active" aria-current="page"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+      {% elif n > page.number|add:-3 and n < page.number|add:3 %}
+        <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if page.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page.next_page_number }}">Next</a>
+    </li>
+      {% else %}
+      <li class="page-item">
+      <a class="page-link disabled">Next</a>
+    </li>
+      {% endif %}
+  </ul>
+</nav>
+{% endblock %}

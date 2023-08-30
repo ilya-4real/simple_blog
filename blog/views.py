@@ -1,9 +1,6 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
-from django.urls import reverse
-from django.shortcuts import get_object_or_404
 from django.views.generic import View
-
+from django.core.paginator import Paginator
 
 from .models import Post, Tag
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
@@ -16,7 +13,12 @@ def main_blog(request):
 
 def posts_view(request):
     posts = Post.objects.all()
-    return render(request, 'blog/posts.html', context={'posts': posts})
+    paginator = Paginator(posts, 3)
+
+    page_number = request.GET.get('page', 1)
+    page = paginator.get_page(page_number)
+
+    return render(request, 'blog/posts.html', context={'page': page})
 
 
 class PostDetail(ObjectDetailMixin, View):
@@ -67,14 +69,6 @@ class TagDelete(ObjectDeleteMixin, View):
     delete_template = 'blog/tag_delete.html'
     list_template = 'all_tags_url'
 
-    # def get(self, request, slug):
-    #     tag = Tag.objects.get(slug__iexact=slug)
-    #     return render(request, 'blog/tag_delete.html', context={'tag': tag})
-    #
-    # def post(self, request, slug):
-    #     tag = Tag.objects.get(slug__iexact=slug)
-    #     tag.delete()
-    #     return redirect(reverse('all_tags_url'))
 
 
 
