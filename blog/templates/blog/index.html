@@ -1,1 +1,20 @@
 {%extends 'blog/base_blog.html'%}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+<div class="card mb-2" style="width: 25rem; margin: auto;">
+   <div class="card-body">
+     <h5 class="card-title">Welcome aboard!</h5>
+     <p class="card-text"> This is a project of a young Python developer.
+         the project is written in django, and bootstrap is responsible for the styles.
+         At the moment, the system of posts and tags is implemented here. At the top are the
+         site navigation buttons. You can also search by tags and posts.</p>
+   </div>
+ </div>
+
+{% include 'blog/includes/footer.html' %}
+
+{% endblock %}

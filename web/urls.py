@@ -17,10 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 
-from .views import main_view
+from .views import redirect_blog
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),
-    path('', main_view),
+    path('', redirect_blog),
 ]
