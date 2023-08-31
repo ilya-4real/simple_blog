@@ -7,6 +7,12 @@
 
 
 {%block content%}
+<!--    search bar-->
+    <form class="d-flex container mb-3" action="{% url 'all_posts_url' %}" role="search" style="max-width: 400px;">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="post_search">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+
     {%for post in page.object_list %}
             {% include 'blog/includes/post_card.html' %}
     {%endfor%}
@@ -14,7 +20,7 @@
 {% block paginator %}
 <nav aria-label="..." style="max-width: 350px; margin: auto">
   <ul class="pagination">
-
+<!--    'previous' button settings-->
     {% if page.has_previous %}
     <li class="page-item">
       <a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a>
@@ -24,13 +30,17 @@
       <a class="page-link disabled">Previous</a>
     </li>
     {% endif %}
+
       {%for n in page.paginator.page_range %}
+<!--      max paginated pages-->
       {% if page.number == n %}
         <li class="page-item active" aria-current="page"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
       {% elif n > page.number|add:-3 and n < page.number|add:3 %}
         <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
       {% endif %}
+
       {% endfor %}
+<!--      'next' button settings-->
       {% if page.has_next %}
     <li class="page-item">
       <a class="page-link" href="?page={{ page.next_page_number }}">Next</a>
@@ -42,4 +52,8 @@
       {% endif %}
   </ul>
 </nav>
+{% endblock %}
+
+{% block footer %}
+    {% include 'blog/includes/footer.html' %}
 {% endblock %}

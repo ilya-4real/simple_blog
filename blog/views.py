@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 from .models import Post, Tag
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
@@ -12,9 +13,15 @@ def main_blog(request):
 
 
 def posts_view(request):
-    posts = Post.objects.all()
-    paginator = Paginator(posts, 3)
+    search_query = request.GET.get('post_search', '')
 
+    if search_query:
+        posts = Post.objects.filter(Q(title__icontains=search_query) | Q(body__icontains=search_query))
+    else:
+        posts = Post.objects.all()
+
+    # pagination
+    paginator = Paginator(posts, 3)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
 
@@ -44,7 +51,11 @@ class PostDelete(ObjectDeleteMixin, View):
 
 
 def tags_view(request):
-    tags = Tag.objects.all()
+    search_query = request.GET.get('tag_search', '')
+    if search_query:
+        tags = Tag.objects.filter(Q(title__icontains=search_query))
+    else:
+        tags = Tag.objects.all()
     return render(request, 'blog/tags.html', context={'tags': tags})
 
 
@@ -68,9 +79,3 @@ class TagDelete(ObjectDeleteMixin, View):
     model = Tag
     delete_template = 'blog/tag_delete.html'
     list_template = 'all_tags_url'
-
-
-
-
-
-
