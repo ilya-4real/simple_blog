@@ -1,4 +1,7 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 from .models import *
 from django.core.exceptions import ValidationError
 
@@ -43,3 +46,18 @@ class PostForm(forms.ModelForm):
         if new_slug == 'create':
             raise ValidationError('You cannot create post with slug "create"')
         return new_slug
+
+
+class UserSignUpForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
+
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-input'}),
+            'password1': forms.PasswordInput(attrs={'type': 'password', 'class': 'form-input'}),
+            'password2': forms.PasswordInput(attrs={'type': 'password', 'class': 'form-input'}),
+        }
+
+

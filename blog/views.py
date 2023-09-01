@@ -1,15 +1,52 @@
+from django.contrib.auth import logout
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import View
+from django.shortcuts import redirect
+from django.views.generic import View, CreateView
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth import login
+from django.urls import reverse_lazy
+
 
 from .models import Post, Tag
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
-from .forms import TagForm, PostForm
+from .forms import TagForm, PostForm, UserSignUpForm
 
 
 def main_blog(request):
     return render(request, 'blog/index.html')
+
+
+class UserSignUp(CreateView):
+    form_class = UserSignUpForm
+    template_name = 'blog/sign_up.html'
+    success_url = reverse_lazy('home_page_url')
+
+
+class SignUp(View):
+    def get(self, request):
+        bound_form = UserSignUpForm()
+        return render(request, 'blog/sign_up.html', context={'form': bound_form})
+
+    def post(self, request):
+        form = UserSignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home_page_url')
+        else:
+            return render(request, 'blog/sign_up.html', context={'form': form})
+
+
+def log_in_user(request):
+    ...
+
+
+def log_out_user(request):
+    logout(request)
+    return redirect('home_page_url')
 
 
 def posts_view(request):
