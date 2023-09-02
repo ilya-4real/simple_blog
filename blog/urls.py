@@ -3,8 +3,8 @@ from .views import *
 
 urlpatterns = [
     path('', main_blog, name='home_page_url'),
-    path('log_in', log_in_user, name='log_in_url'),
-    path('sign_up', SignUp.as_view(), name='sign_up_url'),
+    path('log_in/', UserLogIn.as_view(), name='log_in_url'),
+    path('sign_up/', SignUp.as_view(), name='sign_up_url'),
     path('log_out', log_out_user, name='log_out_url'),
     path('posts/', posts_view, name='all_posts_url'),
     path('post/create/', PostCreate.as_view(), name='post_create_url'),

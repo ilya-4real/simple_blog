@@ -12,7 +12,4 @@
       {% for post in tag.posts.all %}
             {% include 'blog/includes/post_card.html' %}
         {% endfor %}
-    <div class="col-md-12 text-center">
-        <a href="{% url 'tag_create_url' %}" class="btn btn-primary">Create tag</a>
-    </div>
 {% endblock %}

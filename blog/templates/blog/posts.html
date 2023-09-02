@@ -16,6 +16,11 @@
     {%for post in page.object_list %}
             {% include 'blog/includes/post_card.html' %}
     {%endfor%}
+{% if request.user.is_authenticated %}
+    <div class="col-md-12 text-center mb-3">
+        <a href="{% url 'post_create_url' %}" class="btn btn-primary">Create post</a>
+    </div>
+    {% endif %}
 {%endblock%}
 {% block paginator %}
 <nav aria-label="..." style="max-width: 350px; margin: auto">
@@ -52,6 +57,7 @@
       {% endif %}
   </ul>
 </nav>
+
 {% endblock %}
 
 {% block footer %}

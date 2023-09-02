@@ -12,20 +12,25 @@
   </head>
   <body>
     <div class="container">
-        <header class="d-flex justify-content-center py-3 mb-5">
-          <ul class="nav nav-pills">
-            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
-            <li class="nav-item"><a href="{% url 'all_posts_url' %}" class="nav-link">Posts</a></li>
-            <li class="nav-item"><a href="{% url 'all_tags_url' %}" class="nav-link">Tags</a></li>
-              {% if request.user.is_authenticated %}
-            <li class="nav-item"><a href="{% url 'log_out_url' %}" class="nav-link">Log out</a></li>
-            <li class="nav-item"><a href="{% url 'home_page_url' %}" class="nav-link">{{ request.user.get_username }}</a></li>
-              {% else %}
-              <li class="nav-item"><a href="{% url 'log_in_url' %}" class="nav-link">Log in</a></li>
-            <li class="nav-item"><a href="{% url 'sign_up_url' %}" class="nav-link">Sign up</a></li>
-              {% endif %}
-          </ul>
-        </header>
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'home_page_url' %}" class="nav-link px-2 ">Home</a></li>
+        <li><a href="{% url 'all_posts_url' %}" class="nav-link px-2">Posts</a></li>
+        <li><a href="{% url 'all_tags_url' %}" class="nav-link px-2">Tags</a></li>
+      </ul>
+            {% if request.user.is_authenticated %}
+      <div class="col-md-3 text-end">
+        <a href="{% url 'home_page_url' %}" class="btn btn-outline-primary me-2">{{user.username}}</a>
+        <a href="{% url 'log_out_url' %}" class="btn btn-primary">Log out</a>
+      </div>
+          {% else %}
+            <div class="col-md-3 text-end">
+        <a href="{% url 'log_in_url' %}" class="btn btn-outline-primary me-2">Login</a>
+        <a href="{% url 'sign_up_url' %}" class="btn btn-primary">Sign-up</a>
+      </div>
+            {% endif %}
+    </header>
     </div>
         {% block content %}
             <h1>Welcome aboard!</h1>

@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
 from .models import *
@@ -49,15 +49,16 @@ class PostForm(forms.ModelForm):
 
 
 class UserSignUpForm(UserCreationForm):
+    username = forms.CharField(label='Username', widget=forms.TextInput({'class': 'form-control'}))
+    email = forms.EmailField(label='E-mail', widget=forms.EmailInput({'class': 'form-control'}))
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput({'class': 'form-control'}))
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput({'class': 'form-control'}))
 
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2')
 
-        widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-input'}),
-            'password1': forms.PasswordInput(attrs={'type': 'password', 'class': 'form-input'}),
-            'password2': forms.PasswordInput(attrs={'type': 'password', 'class': 'form-input'}),
-        }
 
-
+class UserLogInForm(AuthenticationForm):
+    username = forms.CharField(label='username', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))

@@ -1,18 +1,15 @@
-from django.contrib.auth import logout
-from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Post, Tag
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
-from .forms import TagForm, PostForm, UserSignUpForm
+from .forms import TagForm, PostForm, UserSignUpForm, UserLogInForm
 
 
 def main_blog(request):
@@ -20,12 +17,14 @@ def main_blog(request):
 
 
 class UserSignUp(CreateView):
+    """this is a built-in implementation of user sign-up view"""
     form_class = UserSignUpForm
     template_name = 'blog/sign_up.html'
     success_url = reverse_lazy('home_page_url')
 
 
 class SignUp(View):
+    """this is my implementation"""
     def get(self, request):
         bound_form = UserSignUpForm()
         return render(request, 'blog/sign_up.html', context={'form': bound_form})
@@ -40,8 +39,21 @@ class SignUp(View):
             return render(request, 'blog/sign_up.html', context={'form': form})
 
 
-def log_in_user(request):
-    ...
+class UserLogIn(View):
+    def get(self, request):
+        form = UserLogInForm()
+        return render(request, 'blog/log_in.html', context={'form': form})
+
+    def post(self, request):
+        form = AuthenticationForm()
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home_page_url')
+        else:
+            return render(request, 'blog/log_in.html', context={'form': form})
 
 
 def log_out_user(request):
@@ -70,21 +82,24 @@ class PostDetail(ObjectDetailMixin, View):
     template = 'blog/post_detail.html'
 
 
-class PostCreate(ObjectCreateMixin, View):
+class PostCreate(LoginRequiredMixin, ObjectCreateMixin, View):
     form_model = PostForm
     template = 'blog/post_create.html'
+    raise_exception = True
 
 
-class PostUpdate(ObjectUpdateMixin, View):
+class PostUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
     model = Post
     object_form = PostForm
     template = 'blog/post_update.html'
+    raise_exception = True
 
 
-class PostDelete(ObjectDeleteMixin, View):
+class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     model = Post
     delete_template = 'blog/post_delete.html'
     list_template = 'all_posts_url'
+    raise_exception = True
 
 
 def tags_view(request):
@@ -101,18 +116,21 @@ class TagDetail(ObjectDetailMixin, View):
     template = 'blog/tag_detail.html'
 
 
-class TagCreate(ObjectCreateMixin, View):
+class TagCreate(LoginRequiredMixin, ObjectCreateMixin, View):
     form_model = TagForm
     template = 'blog/tag_create.html'
+    raise_exception = True
 
 
-class TagUpdate(ObjectUpdateMixin, View):
+class TagUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
     model = Tag
     object_form = TagForm
     template = 'blog/tag_update.html'
+    raise_exception = True
 
 
-class TagDelete(ObjectDeleteMixin, View):
+class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     model = Tag
     delete_template = 'blog/tag_delete.html'
     list_template = 'all_tags_url'
+    raise_exception = True

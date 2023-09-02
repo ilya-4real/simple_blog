@@ -20,5 +20,9 @@
         {% endfor %}
 
     </div>
-
+    {% if request.user.is_authenticated %}
+    <div class="col-md-12 text-center">
+        <a href="{% url 'tag_create_url' %}" class="btn btn-primary">Create tag</a>
+    </div>
+    {% endif %}
 {% endblock %}

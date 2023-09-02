@@ -1,10 +1,12 @@
 from django.db import models
 from django.shortcuts import reverse
 
+
 from .services import title_to_slug
 
 
 # Create your models here.
+
 class Post(models.Model):
     title = models.CharField(max_length=150, db_index=True)
     slug = models.SlugField(max_length=150, blank=True, unique=True)
@@ -47,11 +49,3 @@ class Tag(models.Model):
         ordering = ['title']
 
 
-# class Author(models.Model):
-#     id = models.IntegerField(primary_key=True)
-#     name = models.CharField(max_length=50, db_index=True)
-#     email = models.CharField(max_length=50, db_index=True)
-#
-#     def get_absolute_url(self):
-#         return reverse('author_detail_url', kwargs={self.id})
-#

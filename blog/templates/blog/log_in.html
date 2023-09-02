@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'blog/base_blog.html' %}
 
-</body>
-</html>
+{% block content %}
+  <form method="post" style="max-width: 450px; margin: auto;">
+    {% csrf_token %}
+      {%for field in form%}
+    <div class="m-5">
+      {{ field }}
+      <label> {{field.label}} </label>
+    </div>
+      {% endfor %}
+    <button class="btn btn-primary w-100 py-2" type="submit">Log in</button>
+    <p class="mt-5 mb-3 text-body-secondary">©2023</p>
+  </form>
+
+{% endblock %}
