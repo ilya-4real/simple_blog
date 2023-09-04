@@ -16,4 +16,10 @@
         <a href="#" class="card-link">Author</a>
       </div>
     </div>
+    {% if post.author_id == request.user.id %}
+    <div class="col-md-12 text-center my-3">
+        <a href="{{ post.get_update_url }}" class="btn btn-primary">Edit post</a>
+        <a href="{{ post.get_delete_url }}" class="btn btn-danger">Delete post</a>
+    </div>
+    {% endif %}
 {% endblock %}

@@ -6,12 +6,17 @@
 
 
 {% block content %}
-    <form action="{% url 'post_delete_url' slug=post.slug %}" method="post" class="card">
+    <form action="{% url 'post_delete_url' slug=post.slug %}" method="post" class="w-50 mx-auto my-5">
         {% csrf_token %}
         <div class="card-body">
-        <h2 class="card-text">Are you sure you want to delete #{{post.title}} tag?</h2>
-        <a href="{{ post.get_absolute_url }}" class="btn btn-light">Cancel</a>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <h3 class="card-text">Are you sure you want to delete "{{post.title}}" post?</h3>
+
+             <div class="col-md-12 text-center my-3">
+                <a href="{{ post.get_absolute_url }}" class="btn btn-light">Cancel</a>
+                <button type="submit" class="btn btn-danger">Submit</button>
+             </div>
+
+
         </div>
 
     </form>

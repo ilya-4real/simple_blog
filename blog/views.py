@@ -85,21 +85,21 @@ class PostDetail(ObjectDetailMixin, View):
 class PostCreate(LoginRequiredMixin, ObjectCreateMixin, View):
     form_model = PostForm
     template = 'blog/post_create.html'
-    raise_exception = True
+    login_url = reverse_lazy('log_in_url')
 
 
 class PostUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
     model = Post
     object_form = PostForm
     template = 'blog/post_update.html'
-    raise_exception = True
+    login_url = reverse_lazy('log_in_url')
 
 
 class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     model = Post
     delete_template = 'blog/post_delete.html'
     list_template = 'all_posts_url'
-    raise_exception = True
+    login_url = reverse_lazy('log_in_url')
 
 
 def tags_view(request):
@@ -119,18 +119,18 @@ class TagDetail(ObjectDetailMixin, View):
 class TagCreate(LoginRequiredMixin, ObjectCreateMixin, View):
     form_model = TagForm
     template = 'blog/tag_create.html'
-    raise_exception = True
+    login_url = 'log_in_url'
 
 
 class TagUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
     model = Tag
     object_form = TagForm
     template = 'blog/tag_update.html'
-    raise_exception = True
+    login_url = 'log_in_url'
 
 
 class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     model = Tag
     delete_template = 'blog/tag_delete.html'
     list_template = 'all_tags_url'
-    raise_exception = True
+    login_url = 'log_in_url'
