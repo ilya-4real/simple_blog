@@ -40,6 +40,7 @@ class Post(models.Model):
 class Tag(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
+    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='tag')
 
     def get_absolute_url(self):
         return reverse('tag_detail_url', kwargs={'slug': self.slug})

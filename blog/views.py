@@ -25,6 +25,7 @@ class UserSignUp(CreateView):
 
 class SignUp(View):
     """this is my implementation"""
+
     def get(self, request):
         bound_form = UserSignUpForm()
         return render(request, 'blog/sign_up.html', context={'form': bound_form})
@@ -85,21 +86,21 @@ class PostDetail(ObjectDetailMixin, View):
 class PostCreate(LoginRequiredMixin, ObjectCreateMixin, View):
     form_model = PostForm
     template = 'blog/post_create.html'
-    login_url = reverse_lazy('log_in_url')
+    login_url = 'log_in_url'
 
 
 class PostUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
     model = Post
     object_form = PostForm
     template = 'blog/post_update.html'
-    login_url = reverse_lazy('log_in_url')
+    login_url = 'log_in_url'
 
 
 class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     model = Post
     delete_template = 'blog/post_delete.html'
     list_template = 'all_posts_url'
-    login_url = reverse_lazy('log_in_url')
+    login_url = 'log_in_url'
 
 
 def tags_view(request):
