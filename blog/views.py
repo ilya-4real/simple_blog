@@ -65,12 +65,13 @@ def log_out_user(request):
 def posts_view(request):
     search_query = request.GET.get('post_search', '')
 
+    # searching engine try elastic FIXME
     if search_query:
         posts = Post.objects.filter(Q(title__icontains=search_query) | Q(body__icontains=search_query))
     else:
         posts = Post.objects.all()
 
-    # pagination
+    # pagination FIXME
     paginator = Paginator(posts, 3)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
@@ -104,6 +105,7 @@ class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
 
 
 def tags_view(request):
+    # same: try elastic or something else FIXME
     search_query = request.GET.get('tag_search', '')
     if search_query:
         tags = Tag.objects.filter(Q(title__icontains=search_query))
