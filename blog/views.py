@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView
 from django.core.paginator import Paginator
@@ -62,14 +63,27 @@ def log_out_user(request):
     return redirect('home_page_url')
 
 
+class UserProfile(View):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        posts = user.posts.all().prefetch_related('tags')
+        if request.user == user and posts.count():
+            profile_description = 'Your posts:'
+        elif request.user != user and posts.count():
+            profile_description = 'Posts written by this user:'
+        else:
+            profile_description = 'There are no posts here yet...'
+        return render(request, 'blog/profile.html', context={'user': user, 'posts': posts, 'profile_description': profile_description})
+
+
 def posts_view(request):
     search_query = request.GET.get('post_search', '')
 
     # searching engine try elastic FIXME
     if search_query:
-        posts = Post.objects.filter(Q(title__icontains=search_query) | Q(body__icontains=search_query))
+        posts = Post.objects.filter(Q(title__icontains=search_query) | Q(body__icontains=search_query)).select_related('author')
     else:
-        posts = Post.objects.all()
+        posts = Post.objects.all().select_related('author').prefetch_related('tags')
 
     # pagination FIXME
     paginator = Paginator(posts, 3)
@@ -114,9 +128,11 @@ def tags_view(request):
     return render(request, 'blog/tags.html', context={'tags': tags})
 
 
-class TagDetail(ObjectDetailMixin, View):
-    model = Tag
-    template = 'blog/tag_detail.html'
+class TagDetail(View):
+    def get(self, request, slug):
+        tag = Tag.objects.get(slug__iexact=slug)
+        posts = tag.posts.all().select_related('author').prefetch_related('tags')
+        return render(request, 'blog/tag_detail.html', context={'tag': tag, 'posts': posts})
 
 
 class TagCreate(LoginRequiredMixin, ObjectCreateMixin, View):

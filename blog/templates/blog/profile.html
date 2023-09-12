@@ -1,0 +1,22 @@
+{% extends 'blog/base_blog.html' %}
+
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+
+{% block content %}
+        <div class="card mb-4 w-50 mx-auto">
+          <div class="card-body">
+            <p class="fs-1">User profile</p>
+              <p>Username: {{user.username}}</p>
+              <p>email: {{user.email}}</p>
+              <p>Date joined: {{user.date_joined}}</p>
+          </div>
+        </div>
+        <div class="mw-50 mx-auto">
+            <p class="text-center fs-2">{{profile_description}}</p>
+        </div>
+    {% for post in posts %}
+        {% include 'blog/includes/post_card.html' %}
+    {% endfor %}
+{% endblock %}

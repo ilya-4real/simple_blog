@@ -21,7 +21,7 @@
       </ul>
             {% if request.user.is_authenticated %}
       <div class="col-md-3 text-end">
-        <a href="{% url 'home_page_url' %}" class="btn btn-outline-primary me-2">{{user.username}}</a>
+        <a href="{% url 'user_profile_url' user_id=request.user.id %}" class="btn btn-outline-primary me-2">{{user.username}}</a>
         <a href="{% url 'log_out_url' %}" class="btn btn-primary">Log out</a>
       </div>
           {% else %}

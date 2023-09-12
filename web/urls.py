@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
+import debug_toolbar
 
 from .views import redirect_blog
 
 urlpatterns = [
+    path("__debug__/", include("debug_toolbar.urls")),
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),
     path('', redirect_blog),
