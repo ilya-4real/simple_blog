@@ -5,7 +5,7 @@ This is a simple blog created with django. Purpose of this project is learning d
 # Currently available features
  - Authorization and registration
  - Post and tag search
- - Creatind, editing and deleting of post and tags
+ - Creating, editing and deleting post and tags
  - Simple user profile
 
 # Next goals
@@ -14,4 +14,5 @@ This is a simple blog created with django. Purpose of this project is learning d
 
 # Development features
  - Using Bootstrap for styling
+ - Optimized SQl queries
  - SQLite is using just for simplifying of testing
