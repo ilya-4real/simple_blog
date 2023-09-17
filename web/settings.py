@@ -31,14 +31,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # default django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # other libs
     'debug_toolbar',
-    'blog',
+    'rest_framework',
+    # custom apps
+    'blog.apps.BlogConfig',
+    'api.apps.ApiConfig',
+
 ]
 
 MIDDLEWARE = [

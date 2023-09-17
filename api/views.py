@@ -1,3 +1,10 @@
 from django.shortcuts import render
+from rest_framework.generics import ListAPIView
 
-# Create your views here.
+from .serializers import PostSerializer
+from blog.models import Post
+
+
+class PostsApiView(ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
