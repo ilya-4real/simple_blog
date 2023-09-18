@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import PostsApiView
+from .views import *
 
 urlpatterns = [
-    path('', PostsApiView.as_view(), name='test_url')
+    path('posts/', PostsApiView.as_view(), name='posts_url'),
+    path('tags/', TagsApiView.as_view(), name='tags.url'),
 ]
