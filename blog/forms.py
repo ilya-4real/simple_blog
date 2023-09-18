@@ -10,11 +10,10 @@ class TagForm(forms.ModelForm):
 
     class Meta:
         model = Tag
-        fields = ['title', 'slug']
+        fields = ['title', ]
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'tag name'}),
-            'slug': forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'tag slug'})
         }
 
     def clean_slug(self):

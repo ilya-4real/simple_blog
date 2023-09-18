@@ -51,6 +51,11 @@ class Tag(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = title_to_slug(self.title)
+        super().save(*args, **kwargs)
+
     class Meta:
         ordering = ['title']
 

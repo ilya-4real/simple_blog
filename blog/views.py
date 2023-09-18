@@ -73,7 +73,12 @@ class UserProfile(View):
             profile_description = 'Posts written by this user:'
         else:
             profile_description = 'There are no posts here yet...'
-        return render(request, 'blog/profile.html', context={'user': user, 'posts': posts, 'profile_description': profile_description})
+
+        context = {'user': user,
+                   'posts': posts,
+                   'profile_description': profile_description}
+
+        return render(request, 'blog/profile.html', context=context)
 
 
 def posts_view(request):
@@ -81,9 +86,19 @@ def posts_view(request):
 
     # searching engine try elastic FIXME
     if search_query:
-        posts = Post.objects.filter(Q(title__icontains=search_query) | Q(body__icontains=search_query)).select_related('author')
+        posts = (
+            Post.objects
+            .filter(Q(title__icontains=search_query) | Q(body__icontains=search_query))
+            .select_related('author')
+            .prefetch_related('tags')
+        )
     else:
-        posts = Post.objects.all().select_related('author').prefetch_related('tags')
+        posts = (
+            Post.objects
+            .all()
+            .select_related('author')
+            .prefetch_related('tags')
+        )
 
     # pagination FIXME
     paginator = Paginator(posts, 3)
@@ -131,7 +146,12 @@ def tags_view(request):
 class TagDetail(View):
     def get(self, request, slug):
         tag = Tag.objects.get(slug__iexact=slug)
-        posts = tag.posts.all().select_related('author').prefetch_related('tags')
+        posts = (
+            tag
+            .posts
+            .all()
+            .prefetch_related('tags')
+        )
         return render(request, 'blog/tag_detail.html', context={'tag': tag, 'posts': posts})
 
 
