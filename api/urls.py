@@ -10,6 +10,7 @@ router.register(r'tags', TagViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('auth/', include('rest_framework.urls'))
     # path('posts/', PostViewSet.as_view({'get': 'list'})),
     # path('posts/<int:pk>', PostViewSet.as_view({'put': 'update'})),
     # path('posts/<int:pk>', PostViewSet.as_view({'get': 'retrieve'})),

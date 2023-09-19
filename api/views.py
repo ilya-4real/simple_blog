@@ -5,6 +5,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from .permissions import IsAdminOrReadOnly, IsCreatorOrReadOnly
 from .serializers import *
 from blog.models import Post
 
@@ -12,6 +13,8 @@ from blog.models import Post
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().select_related('author').prefetch_related('tags')
     serializer_class = PostSerializer
+    permission_classes = (IsAdminOrReadOnly, IsCreatorOrReadOnly)
+
 
 class PostsApiView(ListAPIView):
     queryset = Post.objects.all().select_related('author').prefetch_related('tags')
@@ -21,6 +24,7 @@ class PostsApiView(ListAPIView):
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+    permission_classes = (IsAdminOrReadOnly, IsCreatorOrReadOnly)
 
 
 class TagsApiView(ListAPIView):

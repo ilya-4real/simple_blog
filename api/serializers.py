@@ -25,9 +25,11 @@ class PostSerializer(ModelSerializer):
     """
     built-in DRF model serializer
     """
+    # author = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    author = serializers.CharField()
     class Meta:
         model = Post
-        fields = ('title', 'slug', 'body', 'tags', 'pub_date', 'author',)
+        fields = ('id', 'title', 'slug', 'body', 'tags', 'pub_date', 'author',)
 
 
 class CustomPostSerializer(serializers.Serializer):
