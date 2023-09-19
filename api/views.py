@@ -1,6 +1,7 @@
 from django.forms import model_to_dict
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView
+from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -8,9 +9,18 @@ from .serializers import *
 from blog.models import Post
 
 
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all().select_related('author').prefetch_related('tags')
+    serializer_class = PostSerializer
+
 class PostsApiView(ListAPIView):
     queryset = Post.objects.all().select_related('author').prefetch_related('tags')
     serializer_class = CustomPostSerializer
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
 
 class TagsApiView(ListAPIView):
