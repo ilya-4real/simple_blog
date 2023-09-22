@@ -64,6 +64,7 @@ def log_out_user(request):
 
 
 class UserProfile(View):
+    # TODO fix sql queries
     def get(self, request, user_id):
         user = User.objects.get(pk=user_id)
         posts = user.posts.all().prefetch_related('tags')
@@ -100,7 +101,7 @@ def posts_view(request):
             .prefetch_related('tags')
         )
 
-    # pagination FIXME
+    # pagination FIXME make an external package
     paginator = Paginator(posts, 3)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
