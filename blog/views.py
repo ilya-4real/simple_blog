@@ -2,11 +2,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView
-from django.core.paginator import Paginator
+# from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .services import paginate
 
 from .models import Post, Tag
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
@@ -93,10 +94,7 @@ def posts_view(request):
             .prefetch_related('tags')
         )
 
-    # pagination FIXME make an external package
-    paginator = Paginator(posts, 3)
-    page_number = request.GET.get('page', 1)
-    page = paginator.get_page(page_number)
+    page = paginate(request.GET.get('page'), posts, 3)
 
     return render(request, 'blog/posts.html', context={'page': page})
 

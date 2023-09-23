@@ -10,7 +10,7 @@ class ObjectDetailMixin:
     template = None
 
     def get(self, request, slug):
-        obj = self.model.objects.get(slug__iexact=slug)
+        obj = self.model.objects.filter(slug__iexact=slug).select_related('author')[0]
         return render(request, self.template, context={self.model.__name__.lower(): obj})
 
 

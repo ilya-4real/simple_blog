@@ -8,8 +8,7 @@ def title_to_slug(s):
     return slugified + str(int(time()))
 
 
-def paginate(objects, pages: int):
-    paginator = Paginator(objects, pages)
-    ...
-
-
+def paginate(page_number, queryset, page_size):
+    paginator = Paginator(queryset, page_size)
+    paginated_data = paginator.get_page(page_number)
+    return paginated_data
