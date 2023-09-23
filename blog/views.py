@@ -47,7 +47,7 @@ class UserLogIn(View):
         return render(request, 'blog/log_in.html', context={'form': form})
 
     def post(self, request):
-        form = AuthenticationForm()
+        form = UserLogInForm()
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)

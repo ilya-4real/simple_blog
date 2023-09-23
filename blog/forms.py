@@ -13,7 +13,7 @@ class TagForm(forms.ModelForm):
         fields = ['title', ]
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'tag name'}),
+            'title': forms.TextInput(attrs={'class': 'form-control my-3', 'placeholder': 'tag name'}),
         }
 
     def clean_slug(self):
@@ -24,6 +24,12 @@ class TagForm(forms.ModelForm):
         if Tag.objects.filter(slug__iexact=new_slug).count():
             raise ValidationError('This tag already exists!')
         return new_slug
+
+    def clean_title(self):
+        new_title = self.cleaned_data['title']
+        if " " in new_title:
+            raise ValidationError('You can create only one-word tag')
+        return new_title
 
 
 class PostForm(forms.ModelForm):
