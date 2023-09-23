@@ -68,16 +68,8 @@ class UserProfile(View):
     def get(self, request, user_id):
         user = User.objects.get(pk=user_id)
         posts = user.posts.all().prefetch_related('tags')
-        if request.user == user and posts.count():
-            profile_description = 'Your posts:'
-        elif request.user != user and posts.count():
-            profile_description = 'Posts written by this user:'
-        else:
-            profile_description = 'There are no posts here yet...'
-
         context = {'user': user,
-                   'posts': posts,
-                   'profile_description': profile_description}
+                   'posts': posts, }
 
         return render(request, 'blog/profile.html', context=context)
 
@@ -151,6 +143,7 @@ class TagDetail(View):
             tag
             .posts
             .all()
+            .select_related('author')
             .prefetch_related('tags')
         )
         return render(request, 'blog/tag_detail.html', context={'tag': tag, 'posts': posts})
