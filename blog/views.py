@@ -1,14 +1,12 @@
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView
-# from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .services import paginate
 
+from .services import paginate
 from .models import Post, Tag
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
 from .forms import TagForm, PostForm, UserSignUpForm, UserLogInForm
@@ -67,8 +65,8 @@ def log_out_user(request):
 class UserProfile(View):
     # TODO fix sql queries
     def get(self, request, user_id):
-        user = User.objects.get(pk=user_id)
-        posts = user.posts.all().prefetch_related('tags')
+        user = User.objects.filter(pk=user_id)[0]
+        posts = user.posts.all().select_related('author').prefetch_related('tags')
         context = {'user': user,
                    'posts': posts, }
 
