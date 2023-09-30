@@ -5,14 +5,18 @@
 {% endblock %}
 
 {% block content %}
-<div class="card mb-2" style="width: 25rem; margin: auto;">
-   <div class="card-body">
-     <h5 class="card-title">Welcome aboard!</h5>
-     <p class="card-text"> This is a project of a young Python developer.
+<div class="px-4 py-5 my-5 text-center">
+    <h4 class="display-5 fw-bold text-body-emphasis">Welcome aboard!</h4>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">This is a project of a young Python developer.
          the project is written in django, and bootstrap is responsible for the styles.
          At the moment, the system of posts and tags is implemented here. At the top are the
          site navigation buttons. You can also search by tags and posts.</p>
-   </div>
- </div>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a class="btn btn-primary btn-lg px-4 gap-3" href="{% url 'all_posts_url' %}">View posts</a>
+      </div>
+    </div>
+  </div>
+
 
 {% endblock %}

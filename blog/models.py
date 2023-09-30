@@ -3,7 +3,7 @@ from django.db import models
 from django.shortcuts import reverse
 
 
-from .services import title_to_slug
+from blog.modules.services import title_to_slug
 
 
 # Create your models here.

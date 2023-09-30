@@ -6,8 +6,10 @@ from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .services import paginate
+from blog.modules.services import paginate
+
 from .models import Post, Tag
+from .modules.scrapper import Scraper
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
 from .forms import TagForm, PostForm, UserSignUpForm, UserLogInForm
 
@@ -63,7 +65,7 @@ def log_out_user(request):
 
 
 class UserProfile(View):
-    # TODO fix sql queries
+
     def get(self, request, user_id):
         user = User.objects.filter(pk=user_id)[0]
         posts = user.posts.all().select_related('author').prefetch_related('tags')
@@ -92,8 +94,7 @@ def posts_view(request):
             .prefetch_related('tags')
         )
 
-    page = paginate(request.GET.get('page'), posts, 3)
-
+    page = paginate(request.GET.get('page'), posts, 5)
     return render(request, 'blog/posts.html', context={'page': page})
 
 
@@ -123,7 +124,6 @@ class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
 
 
 def tags_view(request):
-    # same: try elastic or something else FIXME
     search_query = request.GET.get('tag_search', '')
     if search_query:
         tags = Tag.objects.filter(Q(title__icontains=search_query))
@@ -163,3 +163,19 @@ class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     delete_template = 'blog/tag_delete.html'
     list_template = 'all_tags_url'
     login_url = 'log_in_url'
+
+
+class NewsFeed(View):
+    login_url = 'log_in_url'
+
+    def get(self, request):
+        scrapped = Scraper('https://news.yahoo.com/rss')
+        channel = scrapped.scrap_channel()
+        items = scrapped.scrap_item(10)
+
+        context = {
+            'channel': channel,
+            'items': items,
+        }
+
+        return render(request, 'blog/newsfeed.html', context)

@@ -74,6 +74,13 @@ TEMPLATES = [
     },
 ]
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": os.path.join(BASE_DIR, 'blog_cache'),
+    }
+}
+
 WSGI_APPLICATION = 'web.wsgi.application'
 
 
