@@ -5,14 +5,15 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container align-items-center" style="max-width: 450px;">
-    <h1 class="mt-5 mb-5" >Create Your own tag!</h1>
+ <div class="container align-items-center" style="max-width: 450px;">
+    <h1 class="mt-5 mb-5" >Edit the #{{tag.title}} tag</h1>
   </div>
-  <form action="{{ tag.get_update_url }}" method="post" style="max-width: 300px; margin: auto;">
+  <form action="{{tag.get_update_url}}" method="post" style="max-width: 300px; margin: auto;">
   {% csrf_token %}
 
-      {%for field in form%}
-        <div class="form-control">
+
+        <div class="form-control mb-3">
+          {%for field in form%}
           {%if field.errors %}
             <div class="alert alert-danger">
               {{ field.errors }}
@@ -20,11 +21,10 @@
           {% endif %}
 
           {{field}}
+          {% endfor %}
+          <button type="submit" class="btn btn-primary w-100 mb-3">Create tag</button>
         </div>
 
-      {% endfor %}
-
-      <button type="submit" class="btn btn-primary">Edit tag</button>
     </form>
 
 {% endblock %}
