@@ -38,11 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # other libs
+    'blog',
     'debug_toolbar',
     'rest_framework',
     # custom apps
-    'blog.apps.BlogConfig',
     'api.apps.ApiConfig',
 
 ]

@@ -2,3 +2,5 @@ db.sqlite3
 blog/__pycache__/
 api/__pycache__/
 web/__pycache__/
+blog_cache/
+rssdata.xml
