@@ -10,11 +10,10 @@ class TagForm(forms.ModelForm):
 
     class Meta:
         model = Tag
-        fields = ['title', 'slug']
+        fields = ['title', ]
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'tag name'}),
-            'slug': forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'tag slug'})
+            'title': forms.TextInput(attrs={'class': 'form-control my-3', 'placeholder': 'tag name'}),
         }
 
     def clean_slug(self):
@@ -26,16 +25,21 @@ class TagForm(forms.ModelForm):
             raise ValidationError('This tag already exists!')
         return new_slug
 
+    def clean_title(self):
+        new_title = self.cleaned_data['title']
+        if " " in new_title:
+            raise ValidationError('You can create only one-word tag')
+        return new_title
+
 
 class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['title', 'slug', 'body', 'tags']
+        fields = ['title', 'body', 'tags']
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Title of the post'}),
-            'slug': forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'slug'}),
             'body': forms.Textarea(attrs={'class': 'form-control mb-3', 'placeholder': 'Body'}),
             'tags': forms.SelectMultiple(attrs={'class': 'form-select mb-3'}),
         }

@@ -3,7 +3,7 @@ from django.db import models
 from django.shortcuts import reverse
 
 
-from .services import title_to_slug
+from blog.modules.services import post_slugifier, tag_slugifier
 
 
 # Create your models here.
@@ -30,7 +30,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.slug = title_to_slug(self.title)
+            self.slug = post_slugifier(self.title)
         super().save(*args, **kwargs)
 
     class Meta:
@@ -50,6 +50,11 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = tag_slugifier(self.title)
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['title']

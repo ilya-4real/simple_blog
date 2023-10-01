@@ -6,7 +6,8 @@
 
 
 {% block content %}
-    <form action="{% url 'post_delete_url' slug=post.slug %}" method="post" class="w-50 mx-auto my-5">
+<div class="container w-50 border border-grey rounded">
+    <form action="{% url 'post_delete_url' slug=post.slug %}" method="post" class="text-center mx-auto my-5">
         {% csrf_token %}
         <div class="card-body">
         <h3 class="card-text">Are you sure you want to delete "{{post.title}}" post?</h3>
@@ -20,4 +21,5 @@
         </div>
 
     </form>
+</div>
 {% endblock %}

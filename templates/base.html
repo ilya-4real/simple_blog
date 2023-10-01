@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,12 +16,13 @@
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         <li><a href="{% url 'home_page_url' %}" class="nav-link px-2 ">Home</a></li>
+        <li><a href="{% url 'news_feed_url' %}" class="nav-link px-2 ">News</a></li>
         <li><a href="{% url 'all_posts_url' %}" class="nav-link px-2">Posts</a></li>
         <li><a href="{% url 'all_tags_url' %}" class="nav-link px-2">Tags</a></li>
       </ul>
             {% if request.user.is_authenticated %}
       <div class="col-md-3 text-end">
-        <a href="{% url 'user_profile_url' user_id=request.user.id %}" class="btn btn-outline-primary me-2">{{user.username}}</a>
+        <a href="{% url 'user_profile_url' user_id=request.user.id %}" class="btn btn-outline-primary me-2">Profile</a>
         <a href="{% url 'log_out_url' %}" class="btn btn-primary">Log out</a>
       </div>
           {% else %}

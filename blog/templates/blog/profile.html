@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="mw-50 mx-auto">
-            <p class="text-center fs-2">{{profile_description}}</p>
+            <p class="text-center fs-2">{{user.username|title}}'s posts</p>
         </div>
     {% for post in posts %}
         {% include 'blog/includes/post_card.html' %}

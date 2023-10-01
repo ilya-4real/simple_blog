@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 
-from .models import *
+from .models import reverse
 
 
 class ObjectDetailMixin:
@@ -10,7 +9,7 @@ class ObjectDetailMixin:
     template = None
 
     def get(self, request, slug):
-        obj = self.model.objects.get(slug__iexact=slug)
+        obj = self.model.objects.filter(slug__iexact=slug).select_related('author')[0]
         return render(request, self.template, context={self.model.__name__.lower(): obj})
 
 

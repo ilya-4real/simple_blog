@@ -1,14 +1,15 @@
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView
-from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from blog.modules.services import paginate
+
 from .models import Post, Tag
+from .modules.scrapper import Scraper
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
 from .forms import TagForm, PostForm, UserSignUpForm, UserLogInForm
 
@@ -47,7 +48,7 @@ class UserLogIn(View):
         return render(request, 'blog/log_in.html', context={'form': form})
 
     def post(self, request):
-        form = AuthenticationForm()
+        form = UserLogInForm()
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -64,16 +65,14 @@ def log_out_user(request):
 
 
 class UserProfile(View):
+
     def get(self, request, user_id):
-        user = User.objects.get(pk=user_id)
-        posts = user.posts.all().prefetch_related('tags')
-        if request.user == user and posts.count():
-            profile_description = 'Your posts:'
-        elif request.user != user and posts.count():
-            profile_description = 'Posts written by this user:'
-        else:
-            profile_description = 'There are no posts here yet...'
-        return render(request, 'blog/profile.html', context={'user': user, 'posts': posts, 'profile_description': profile_description})
+        user = User.objects.filter(pk=user_id)[0]
+        posts = user.posts.all().select_related('author').prefetch_related('tags')
+        context = {'user': user,
+                   'posts': posts, }
+
+        return render(request, 'blog/profile.html', context=context)
 
 
 def posts_view(request):
@@ -81,15 +80,21 @@ def posts_view(request):
 
     # searching engine try elastic FIXME
     if search_query:
-        posts = Post.objects.filter(Q(title__icontains=search_query) | Q(body__icontains=search_query)).select_related('author')
+        posts = (
+            Post.objects
+            .filter(Q(title__icontains=search_query) | Q(body__icontains=search_query))
+            .select_related('author')
+            .prefetch_related('tags')
+        )
     else:
-        posts = Post.objects.all().select_related('author').prefetch_related('tags')
+        posts = (
+            Post.objects
+            .all()
+            .select_related('author')
+            .prefetch_related('tags')
+        )
 
-    # pagination FIXME
-    paginator = Paginator(posts, 3)
-    page_number = request.GET.get('page', 1)
-    page = paginator.get_page(page_number)
-
+    page = paginate(request.GET.get('page'), posts, 5)
     return render(request, 'blog/posts.html', context={'page': page})
 
 
@@ -119,7 +124,6 @@ class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
 
 
 def tags_view(request):
-    # same: try elastic or something else FIXME
     search_query = request.GET.get('tag_search', '')
     if search_query:
         tags = Tag.objects.filter(Q(title__icontains=search_query))
@@ -131,7 +135,13 @@ def tags_view(request):
 class TagDetail(View):
     def get(self, request, slug):
         tag = Tag.objects.get(slug__iexact=slug)
-        posts = tag.posts.all().select_related('author').prefetch_related('tags')
+        posts = (
+            tag
+            .posts
+            .all()
+            .select_related('author')
+            .prefetch_related('tags')
+        )
         return render(request, 'blog/tag_detail.html', context={'tag': tag, 'posts': posts})
 
 
@@ -153,3 +163,19 @@ class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     delete_template = 'blog/tag_delete.html'
     list_template = 'all_tags_url'
     login_url = 'log_in_url'
+
+
+class NewsFeed(View):
+    login_url = 'log_in_url'
+
+    def get(self, request):
+        scrapped = Scraper('https://news.yahoo.com/rss')
+        channel = scrapped.scrap_channel()
+        items = scrapped.scrap_item(10)
+
+        context = {
+            'channel': channel,
+            'items': items,
+        }
+
+        return render(request, 'blog/newsfeed.html', context)
