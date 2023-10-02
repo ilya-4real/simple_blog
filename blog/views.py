@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from blog.modules.services import paginate
+from accounts.models import UserProfile
 
 from .models import Post, Tag
 from .modules.scrapper import Scraper
@@ -64,10 +65,10 @@ def log_out_user(request):
     return redirect('home_page_url')
 
 
-class UserProfile(View):
+class UserProfile1(View):
 
     def get(self, request, user_id):
-        user = User.objects.filter(pk=user_id)[0]
+        user = UserProfile.objects.get(pk=user_id)
         posts = user.posts.all().select_related('author').prefetch_related('tags')
         context = {'user': user,
                    'posts': posts, }

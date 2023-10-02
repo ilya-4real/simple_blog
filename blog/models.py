@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.shortcuts import reverse
+from accounts.models import UserProfile
 
 
 from blog.modules.services import post_slugifier, tag_slugifier
@@ -14,7 +15,7 @@ class Post(models.Model):
     body = models.TextField(blank=True, db_index=True)
     tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
     pub_date = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='posts')
+    author = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='posts')
 
     def get_absolute_url(self):
         return reverse('post_detail_url', kwargs={'slug': self.slug})
@@ -40,7 +41,7 @@ class Post(models.Model):
 class Tag(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
-    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='tag')
+    author = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='tag')
 
     def get_absolute_url(self):
         return reverse('tag_detail_url', kwargs={'slug': self.slug})
