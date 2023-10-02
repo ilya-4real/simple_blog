@@ -5,3 +5,5 @@ api/__pycache__/
 rssdata.xml
 blog_cache/
 blog/modules/__pycache__/
+blog/migrations/__pycache__/
+api/migrations/__pycache__/
