@@ -66,11 +66,10 @@ def log_out_user(request):
 
 
 class UserProfile1(View):
-
     def get(self, request, user_id):
         user = UserProfile.objects.get(pk=user_id)
         posts = user.posts.all().select_related('author').prefetch_related('tags')
-        context = {'user': user,
+        context = {'found_user': user,
                    'posts': posts, }
 
         return render(request, 'blog/profile.html', context=context)

@@ -59,7 +59,7 @@ class UserSignUpForm(UserCreationForm):
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput({'class': 'form-control'}))
 
     class Meta:
-        model = User
+        model = UserProfile
         fields = ('username', 'password1', 'password2')
 
 

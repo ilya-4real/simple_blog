@@ -8,13 +8,18 @@
         <div class="card mb-4 w-50 mx-auto">
           <div class="card-body">
             <p class="fs-1">User profile</p>
-              <p>Username: {{user.username}}</p>
-              <p>email: {{user.email}}</p>
-              <p>Date joined: {{user.date_joined}}</p>
+              <p>Username: {{found_user.username}}</p>
+              <p>email: {{found_user.email}}</p>
+              <p>gender: {{found_user.gender}}</p>
+              <p>bio: {{found_user.bio}}</p>
+              <p>Date joined: {{found_user.date_joined}}</p>
           </div>
         </div>
+        {% if found_user is user%}
+        <a href="{% url 'user_update_url' %}" class="btn btn-primary">Edit profile</a>
+        {% endif %}
         <div class="mw-50 mx-auto">
-            <p class="text-center fs-2">{{user.username|title}}'s posts</p>
+            <p class="text-center fs-2">{{found_user.username|title}}'s posts</p>
         </div>
     {% for post in posts %}
         {% include 'blog/includes/post_card.html' %}
