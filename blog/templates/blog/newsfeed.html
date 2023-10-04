@@ -6,7 +6,7 @@
 
 {% block content %}
 <!--    channel-->
-    <div class="container w-25">
+    <div class="container" style="max-width: 550px;">
         <h3 class="my-3">Channel:</h3>
         <div class="card">
           <div class="card-body">
@@ -19,10 +19,10 @@
     </div>
 
 <!--    items-->
-    <div class="container border border-grey rounded w-25">
+    <div class="container border border-grey rounded" style="max-width: 550px;">
     {% for item in items %}
         <h5>{{ item.title }}</h5>
-        <h6>Publication time: {{ item.pubDate }}</h6>
+        <p class="fw-light">Publication time: {{ item.pubDate }}</p>
         <h6 class="mb-5">see the full version: <a href="{{item.link}}">link</a></h6>
         <p></p>
     {% endfor %}

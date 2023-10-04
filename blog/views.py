@@ -1,13 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from blog.modules.services import paginate
+from django.urls import reverse
 
 from .models import Post, Tag
 from .modules.scrapper import Scraper
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
-from .forms import TagForm, PostForm
+from .forms import TagForm, PostForm, CommentForm
 
 
 def main_blog(request):
@@ -36,9 +37,27 @@ def posts_view(request):
     return render(request, 'blog/posts.html', context={'page': page})
 
 
-class PostDetail(ObjectDetailMixin, View):
-    model = Post
-    template = 'blog/post_detail.html'
+class PostDetail(View):
+    def get(self, request, slug):
+        post = Post.objects.get(slug=slug)
+        comment_form = CommentForm()
+        comments = post.comment.all()
+        context = {'post': post,
+                   'comments': comments,
+                   'comment_form': comment_form}
+        return render(request, 'blog/post_detail.html', context=context)
+
+    def post(self, request, slug):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = Post.objects.get(slug=slug)
+            comment.save()
+            form.save_m2m()
+            return redirect(reverse('post_detail_url', args=[slug]))
+        else:
+            return redirect('home_page_url')
 
 
 class PostCreate(LoginRequiredMixin, ObjectCreateMixin, View):

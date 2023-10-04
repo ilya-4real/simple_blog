@@ -13,7 +13,7 @@ class UserProfileForm(forms.ModelForm):
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'user name'}),
             'email': forms.EmailInput(attrs={'class': 'form-control mb-3', 'placeholder': 'email address'}),
-            'bio': forms.Textarea(attrs={'class': 'form-control mb-3', 'placeholder': 'bio'}),
+            'bio': forms.Textarea(attrs={'class': 'form-control mb-5', 'placeholder': 'bio', 'rows': '3'}),
             'profile_image': forms.FileInput(attrs={'class': 'form-control', 'id': 'formFile', 'type': 'file'})
         }
 

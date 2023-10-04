@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="card mt-5" style="width: 420px; margin: auto;">
+    <div class="card mt-5" style="width: 550px; margin: auto;">
       <div class="card-body">
         <h5 class="card-title">{{post.title}}</h5>
         <h6 class="card-subtitle mb-2 text-body-secondary">{{post.pub_date}}</h6>
@@ -22,4 +22,27 @@
         <a href="{{ post.get_delete_url }}" class="btn btn-danger">Delete post</a>
     </div>
     {% endif %}
+    <div class="container border border-grey rounded mt-3 py-2" style="max-width: 550px;">
+    <h5 class="my-2">Comments:</h5>
+        {% if user.is_authenticated %}
+    <form action="{{get_absolute_url}}" method="post" class="container  border border-grey rounded py-3" style="max-width: 500px;">
+
+        {% csrf_token %}
+       {% for field in comment_form %}
+        {{field}}
+        {%endfor%}
+
+        <button class="btn btn-primary mt-3" type="submit">Comment</button>
+    </form>
+        {% endif %}
+    {%for comment in comments %}
+        <div class="container border-bottom">
+            <p class="fs-6 fw-medium">{{comment.author}}</p>
+            <p class="fw-lighter">{{comment.pub_date}}</p>
+            <p class="">{{comment.body}}</p>
+        </div>
+            {%endfor%}
+
+    </div>
+
 {% endblock %}

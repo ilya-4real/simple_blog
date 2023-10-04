@@ -1,6 +1,4 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
 
 from .models import *
 from django.core.exceptions import ValidationError
@@ -50,6 +48,16 @@ class PostForm(forms.ModelForm):
         if new_slug == 'create':
             raise ValidationError('You cannot create post with slug "create"')
         return new_slug
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['body']
+
+        widgets = {
+            'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'leave comment', 'rows': '3'})
+        }
 
 
 

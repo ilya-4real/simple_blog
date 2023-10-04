@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.shortcuts import reverse
 from accounts.models import UserProfile
@@ -60,4 +59,13 @@ class Tag(models.Model):
     class Meta:
         ordering = ['title']
 
+
+class Comment(models.Model):
+    body = models.TextField(max_length=250)
+    author = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='comment')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment')
+    pub_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-pub_date']
 
