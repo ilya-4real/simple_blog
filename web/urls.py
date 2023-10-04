@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 import debug_toolbar
+import web.settings
+from django.conf.urls.static import static
 
 from .views import redirect_blog
 
@@ -27,4 +29,5 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('accounts/', include('accounts.urls')),
     path('', redirect_blog),
-]
+] + static(web.settings.MEDIA_URL, document_root=web.settings.MEDIA_ROOT)
+

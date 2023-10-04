@@ -52,17 +52,4 @@ class PostForm(forms.ModelForm):
         return new_slug
 
 
-class UserSignUpForm(UserCreationForm):
-    username = forms.CharField(label='Username', widget=forms.TextInput({'class': 'form-control'}))
-    email = forms.EmailField(label='E-mail', widget=forms.EmailInput({'class': 'form-control'}))
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput({'class': 'form-control'}))
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput({'class': 'form-control'}))
 
-    class Meta:
-        model = UserProfile
-        fields = ('username', 'password1', 'password2')
-
-
-class UserLogInForm(AuthenticationForm):
-    username = forms.CharField(label='username', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))

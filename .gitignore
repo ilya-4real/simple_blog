@@ -8,3 +8,5 @@ blog/modules/__pycache__/
 blog/migrations/__pycache__/
 api/migrations/__pycache__/
 accounts/__pycache__/
+media
+accounts/migrations/__pycache__/
