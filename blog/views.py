@@ -39,9 +39,9 @@ def posts_view(request):
 
 class PostDetail(View):
     def get(self, request, slug):
-        post = Post.objects.get(slug=slug)
+        post = Post.objects.filter(slug=slug).select_related('author')[0]
         comment_form = CommentForm()
-        comments = post.comment.all()
+        comments = post.comment.all().select_related('author').values('author__username', 'body', 'pub_date')
         context = {'post': post,
                    'comments': comments,
                    'comment_form': comment_form}

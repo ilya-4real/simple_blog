@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block content %}
-    <div style="margin-left: 400px; margin-top: 40px; margin-bottom: 40px">
-    <h1>Posts associated with "{{ tag.title|title }}" tag:</h1>
+    <div class="container text-center">
+        <h1>Posts associated with "{{ tag.title|title }}" tag:</h1>
     </div>
 
       {% for post in posts %}

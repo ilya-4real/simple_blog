@@ -25,7 +25,7 @@
     <div class="container border border-grey rounded mt-3 py-2" style="max-width: 550px;">
     <h5 class="my-2">Comments:</h5>
         {% if user.is_authenticated %}
-    <form action="{{get_absolute_url}}" method="post" class="container  border border-grey rounded py-3" style="max-width: 500px;">
+    <form action="{{get_absolute_url}}" method="post" class="container  border border-grey rounded py-3 mb-2" style="max-width: 500px;">
 
         {% csrf_token %}
        {% for field in comment_form %}
@@ -37,7 +37,7 @@
         {% endif %}
     {%for comment in comments %}
         <div class="container border-bottom">
-            <p class="fs-6 fw-medium">{{comment.author}}</p>
+            <p class="fs-6 fw-medium">{{comment.author__username}}</p>
             <p class="fw-lighter">{{comment.pub_date}}</p>
             <p class="">{{comment.body}}</p>
         </div>
