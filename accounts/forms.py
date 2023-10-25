@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+from .tasks import send_feedback_email_task
 from .models import UserProfile
 
 
@@ -11,10 +12,14 @@ class UserProfileForm(forms.ModelForm):
         fields = ['username', 'email', 'bio', 'profile_image']
 
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'user name'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control mb-3', 'placeholder': 'email address'}),
-            'bio': forms.Textarea(attrs={'class': 'form-control mb-5', 'placeholder': 'bio', 'rows': '3'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'user name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email address'}),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'bio', 'rows': '3'}),
             'profile_image': forms.FileInput(attrs={'class': 'form-control', 'id': 'formFile', 'type': 'file'})
+        }
+
+        labels = {
+            'username': 'username',
         }
 
 
@@ -24,11 +29,17 @@ class UserSignUpForm(UserCreationForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput({'class': 'form-control'}))
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput({'class': 'form-control'}))
 
+    def send_email(self):
+        send_feedback_email_task.delay(self.cleaned_data['email'])
+
     class Meta:
         model = UserProfile
-        fields = ('username', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2')
 
 
 class UserLogInForm(AuthenticationForm):
     username = forms.CharField(label='username', widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    def send_email(self, email):
+        send_feedback_email_task.delay(email)

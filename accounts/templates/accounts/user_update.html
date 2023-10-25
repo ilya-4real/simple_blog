@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="container text-center">
-<h3 class="mb-4">Edit your profile</h3>
+<h3 class="mb-4">Set up your profile</h3>
 <form action="{% url 'user_update_url' %}" method="post" enctype="multipart/form-data" style="max-width: 500px; margin: auto;">
         {% csrf_token %}
         <div class="form-group">
@@ -17,8 +17,12 @@
                 {{ field.errors }}
             </div>
             {% endif %}
+            <div class="mx-3 my-3 text-start">
+                <label>{{field.label}}</label>
+                {{field}}
 
-            {{field}}
+            </div>
+
 
 
         {% endfor %}

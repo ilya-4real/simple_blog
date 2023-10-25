@@ -10,3 +10,4 @@ api/migrations/__pycache__/
 accounts/__pycache__/
 media
 accounts/migrations/__pycache__/
+**/__pycache__/

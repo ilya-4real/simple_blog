@@ -10,7 +10,7 @@ class UserProfile(AbstractUser):
     )
 
     bio = models.TextField('bio', max_length=250, default='', blank=True)
-    profile_image = models.ImageField(upload_to='images/', verbose_name='images', default='images/unknown_user.jpg')
+    profile_image = models.ImageField(upload_to='images/', verbose_name='image', default='images/unknown_user.jpg')
 
     def get_update_url(self):
         return reverse('user_update_url', kwargs={'user_id': self.id})

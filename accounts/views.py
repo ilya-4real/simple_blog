@@ -4,6 +4,7 @@ from django.views import View
 from .forms import UserProfileForm, UserLogInForm, UserSignUpForm
 from .models import UserProfile
 from django.urls import reverse
+from .tasks import print_something_terminal
 
 
 class UserProfile1(View):
@@ -38,6 +39,7 @@ class ProfileUpdateView(View):
 
 def log_out_user(request):
     logout(request)
+    # print_something_terminal.delay('everything is good')
     return redirect('home_page_url')
 
 
@@ -53,7 +55,7 @@ class SignUp(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home_page_url')
+            return redirect('user_update_url')
         else:
             return render(request, 'accounts/sign_up.html', context={'form': form})
 
