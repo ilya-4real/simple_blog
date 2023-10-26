@@ -4,7 +4,6 @@ from django.views import View
 from .forms import UserProfileForm, UserLogInForm, UserSignUpForm
 from .models import UserProfile
 from django.urls import reverse
-from .tasks import print_something_terminal
 
 
 class UserProfile1(View):
@@ -26,7 +25,7 @@ class ProfileUpdateView(View):
 
     def post(self, request):
         print(request.POST)
-        print(request.FILES)
+        print(request.FILES['profile_image'])
         form = UserProfileForm(request.POST, request.FILES, instance=request.user)
         print(form.is_valid())
         if form.is_valid():
@@ -55,6 +54,7 @@ class SignUp(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            form.send_email()
             return redirect('user_update_url')
         else:
             return render(request, 'accounts/sign_up.html', context={'form': form})
