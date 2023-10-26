@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "simple-blog"
+version = "0.50"
+description = "simple blog built with modern tools"
+authors = ["ilya <unknown@user.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^4.2.6"
+celery = "^5.3.4"
+beautifulsoup4 = "^4.12.2"
+django-debug-toolbar = "^4.2.0"
+djangorestframework = "^3.14.0"
+Pillow = "^10.1.0"
+python-dotenv = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

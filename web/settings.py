@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os.path
 from pathlib import Path
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -152,3 +156,11 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = str(getenv('EMAIL_USER'))
+EMAIL_HOST_PASSWORD = str(getenv('EMAIL_PASSWORD'))
+EMAIL_PORT = str(getenv('EMAIL_PORT'))
+EMAIL_USE_TLS = bool(getenv('EMAIL_USE_TLS'))
+DEFAULT_FROM_EMAIL = str(getenv('EMAIL_USER'))

@@ -11,3 +11,4 @@ accounts/__pycache__/
 media
 accounts/migrations/__pycache__/
 **/__pycache__/
+.env

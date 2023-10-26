@@ -1,0 +1,5 @@
+Hello {{username|safe}}!
+You are welcome to our service! We hope, you will enjoy everything on our site. Try every feature!
+
+respectfully,
+ Administration.
